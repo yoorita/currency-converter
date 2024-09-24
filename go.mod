@@ -9,7 +9,6 @@ require (
 	github.com/go-masonry/bviper v1.0.14
 	github.com/go-masonry/bzerolog v1.0.14
 	github.com/go-masonry/mortar v1.0.34
-	github.com/go-masonry/mortar-template v0.0.0-20220203103802-109f6fb06a4f
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0
 	github.com/opentracing/opentracing-go v1.2.0
 	go.uber.org/fx v1.22.2

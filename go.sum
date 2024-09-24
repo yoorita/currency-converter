@@ -500,8 +500,6 @@ github.com/go-masonry/bzerolog v1.0.14/go.mod h1:xEaAKhhtUHaSWUHSfHbb+KZkp+wU0rt
 github.com/go-masonry/mortar v1.0.32/go.mod h1:wova4WX80DYSJU1InISfLE39DFRJ9EWL2tjYk50LqNo=
 github.com/go-masonry/mortar v1.0.34 h1:3IFpzMioFIJd2gpnL1GPnJKdiREj9O+J0h9+4TcFc0w=
 github.com/go-masonry/mortar v1.0.34/go.mod h1:asFbBpOFKhsYkstDqYQ5O7vV8HxCeN9ZljoOXEEdLqg=
-github.com/go-masonry/mortar-template v0.0.0-20220203103802-109f6fb06a4f h1:oY46MKXGs71tcxHDTDARFgGqu5L/Zj0eTLiECObXGQI=
-github.com/go-masonry/mortar-template v0.0.0-20220203103802-109f6fb06a4f/go.mod h1:g6MKH06DBlslBKdvfIPkUaKCrg8CEeqIsDLp05WJaN8=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
