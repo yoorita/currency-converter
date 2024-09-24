@@ -2,7 +2,7 @@
 mortar:
   # Application/Project name
   # Type: string
-  name: "greeter"
+  name: "currency-converter"
   # Web server related configuration
   server:
     grpc:
@@ -39,11 +39,11 @@ mortar:
   monitor:
     # sets the namespace/prefix of every metric. Depends on the Metrics implementation
     # Type: string
-    prefix: "greeter"
+    prefix: "currency-converter"
     # allows to include static labels/tags to every published metric
     # Type: map[string]string
     tags:
-      service: greeter
+      service: currencyconverter
   # Bundled handlers configuration
   handlers:
     config:

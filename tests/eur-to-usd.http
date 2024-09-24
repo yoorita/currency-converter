@@ -1,0 +1,8 @@
+POST http://localhost:5381/v1/convert
+Content-Type: application/json; charset=utf-8
+
+{
+    "currency_from": "EUR", 
+    "currency_to": "USD",
+    "amount_from": 300
+}

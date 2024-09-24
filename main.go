@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/alecthomas/kong"
-	"github.com/go-masonry/mortar-template/app/mortar"
+	"github.com/yoorita/currency-converter/app/mortar"
 	"github.com/go-masonry/mortar/providers"
 	"go.uber.org/fx"
 )

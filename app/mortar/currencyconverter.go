@@ -3,10 +3,10 @@ package mortar
 import (
 	"context"
 
-	helloworld "github.com/go-masonry/mortar-template/api"
-	"github.com/go-masonry/mortar-template/app/controllers"
-	"github.com/go-masonry/mortar-template/app/services"
-	"github.com/go-masonry/mortar-template/app/validations"
+	converter "github.com/yoorita/currency-converter/api"
+	"github.com/yoorita/currency-converter/app/controllers"
+	"github.com/yoorita/currency-converter/app/services"
+	"github.com/yoorita/currency-converter/app/validations"
 	serverInt "github.com/go-masonry/mortar/interfaces/http/server"
 	"github.com/go-masonry/mortar/providers/groups"
 	"google.golang.org/grpc/credentials/insecure"
@@ -16,11 +16,10 @@ import (
 	"google.golang.org/grpc"
 )
 
-type workshopServiceDeps struct {
+type converterServiceDeps struct {
 	fx.In
 
-	// API Implementations, "Register" them as GRPCServiceAPI
-	Helloworld helloworld.GreeterServer
+	CurrencyConverter converter.CurrencyConverterServer
 }
 
 func ServiceAPIsAndOtherDependenciesFxOption() fx.Option {
@@ -35,14 +34,14 @@ func ServiceAPIsAndOtherDependenciesFxOption() fx.Option {
 			Group:  groups.GRPCGatewayGeneratedHandlers + ",flatten", // "flatten" does this [][]serverInt.GRPCGatewayGeneratedHandlers -> []serverInt.GRPCGatewayGeneratedHandlers
 			Target: serviceGRPCGatewayHandlers,
 		}),
-		// All other tutorial dependencies
+		// All other dependencies
 		serviceDependencies(),
 	)
 }
 
-func serviceGRPCServiceAPIs(deps workshopServiceDeps) serverInt.GRPCServerAPI {
+func serviceGRPCServiceAPIs(deps converterServiceDeps) serverInt.GRPCServerAPI {
 	return func(srv *grpc.Server) {
-		helloworld.RegisterGreeterServer(srv, deps.Helloworld)
+		converter.RegisterCurrencyConverterServer(srv, deps.CurrencyConverter)
 		// Any additional gRPC Implementations should be called here
 	}
 }
@@ -51,7 +50,12 @@ func serviceGRPCGatewayHandlers() []serverInt.GRPCGatewayGeneratedHandlers {
 	return []serverInt.GRPCGatewayGeneratedHandlers{
 		// Register service REST API
 		func(mux *runtime.ServeMux, localhostEndpoint string) error {
-			return helloworld.RegisterGreeterHandlerFromEndpoint(context.Background(), mux, localhostEndpoint, []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())})
+			return converter.RegisterCurrencyConverterHandlerFromEndpoint(
+				context.Background(), 
+				mux, 
+				localhostEndpoint, 
+				[]grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())},
+			)
 		},
 		// Any additional gRPC gateway registrations should be called here
 	}
@@ -59,8 +63,8 @@ func serviceGRPCGatewayHandlers() []serverInt.GRPCGatewayGeneratedHandlers {
 
 func serviceDependencies() fx.Option {
 	return fx.Provide(
-		services.CreateHelloworldService,
-		controllers.CreateHelloworldController,
-		validations.CreateHelloworldValidations,
+		services.CreateCurrencyConverterdService,
+		controllers.CreateCurrencyConverterController,
+		validations.CreateCurrencyConverterValidations,
 	)
 }

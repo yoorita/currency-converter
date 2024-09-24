@@ -1,12 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/helloworld.proto",
+    "title": "api/currency_converter.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "Greeter"
+      "name": "CurrencyConverter"
     }
   ],
   "consumes": [
@@ -16,15 +16,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/sayhello": {
+    "/v1/convert": {
       "post": {
-        "summary": "Sends a greeting",
-        "operationId": "Greeter_SayHello",
+        "operationId": "CurrencyConverter_Convert",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/helloworldHelloReply"
+              "$ref": "#/definitions/currencyconverterConvertResponse"
             }
           },
           "default": {
@@ -40,46 +39,54 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/helloworldHelloRequest"
+              "$ref": "#/definitions/currencyconverterConvertRequest"
             }
           }
         ],
         "tags": [
-          "Greeter"
+          "CurrencyConverter"
         ]
       }
     }
   },
   "definitions": {
-    "helloworldHelloReply": {
+    "currencyconverterConvertRequest": {
       "type": "object",
       "properties": {
-        "message": {
+        "currencyFrom": {
           "type": "string"
+        },
+        "currencyTo": {
+          "type": "string"
+        },
+        "amountFrom": {
+          "type": "number",
+          "format": "float"
         }
       },
-      "title": "The response message containing the greetings"
+      "title": "The request"
     },
-    "helloworldHelloRequest": {
+    "currencyconverterConvertResponse": {
       "type": "object",
       "properties": {
-        "name": {
+        "currency": {
           "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "format": "float"
         }
       },
-      "description": "The request message containing the user's name."
+      "title": "The response"
     },
     "protobufAny": {
       "type": "object",
       "properties": {
-        "typeUrl": {
+        "@type": {
           "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
-      }
+      },
+      "additionalProperties": {}
     },
     "rpcStatus": {
       "type": "object",

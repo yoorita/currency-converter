@@ -3,36 +3,32 @@ package controllers
 import (
 	"context"
 
-	helloworld "github.com/go-masonry/mortar-template/api"
+	converter "github.com/yoorita/currency-converter/api"
 
 	"github.com/go-masonry/mortar/interfaces/log"
 	"go.uber.org/fx"
 )
 
-type HelloWorldController interface {
-	helloworld.GreeterServer
+type CurrencyConverterController interface {
+	converter.CurrencyConverterServer
 }
 
-type helloworldControllerDeps struct {
+type currencyConverterControllerImplDeps struct {
 	fx.In
-
 	Logger log.Logger
 }
 
-type helloworldControllerImpl struct {
-	*helloworld.UnimplementedGreeterServer // if keep this one added even when you change your interface this code will compile
-	deps                                   helloworldControllerDeps
+type currencyConverterControllerImpl struct {
+	*converter.UnimplementedCurrencyConverterServer
+	deps currencyConverterControllerImplDeps
 }
 
-func CreateHelloworldController(deps helloworldControllerDeps) HelloWorldController {
-	return &helloworldControllerImpl{
+func CreateCurrencyConverterController(deps currencyConverterControllerImplDeps) CurrencyConverterController {
+	return &currencyConverterControllerImpl{
 		deps: deps,
 	}
 }
 
-func (w *helloworldControllerImpl) SayHello(ctx context.Context, req *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
-	w.deps.Logger.Debug(ctx, "saying hello to %s", req.GetName())
-	return &helloworld.HelloReply{
-		Message: "Hello " + req.GetName(),
-	}, nil
+func (w *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (*converter.ConvertResponse, error) {
+	return &converter.ConvertResponse{}, nil
 }
