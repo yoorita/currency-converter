@@ -1,3 +1,12 @@
+# Ignore all
+*
+
+# Unignore all with extentions
+!*.*
+
+# Unignore all dirs
+!*/
+
 .idea
 .vscode
 coverage.out
