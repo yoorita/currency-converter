@@ -2,10 +2,15 @@ package validations
 
 import (
 	"context"
+	"fmt"
+	"reflect"
 
-	converter "github.com/yoorita/currency-converter/api"
 	"github.com/go-masonry/mortar/interfaces/log"
+	converter "github.com/yoorita/currency-converter/api"
 	"go.uber.org/fx"
+	"go.uber.org/multierr"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type (
@@ -29,6 +34,30 @@ func CreateCurrencyConverterValidations(deps currencyConverterValidationsImplDep
 	}
 }
 
-func (impl *currencyConverterValidationsImpl) ValidateCurruncyConvertRequest(ctx context.Context, req *converter.ConvertRequest) error {
-	return nil
+func (impl *currencyConverterValidationsImpl) ValidateCurruncyConvertRequest(ctx context.Context, req *converter.ConvertRequest) (err error) {
+	combinedErrors := multierr.Combine(
+		validateField(req.CurrencyFrom),
+		validateField(req.CurrencyTo),
+		validateField(req.AmountFrom))
+
+	if currentError := multierr.Errors(combinedErrors); len(currentError) > 0 {
+		err = currentError[0]
+	}
+	return
+}
+
+func validateField(object interface{}) (err error) {
+	if isEmpty(object) {
+		err = status.Errorf(codes.InvalidArgument, fmt.Sprintf("Input parameter %v cannot be empty", reflect.TypeOf(object).Elem().Name()))
+	}
+	return
+}
+
+func isEmpty(object interface{}) bool {
+	if object == nil {
+		return true
+	}
+
+	zero := reflect.Zero(reflect.TypeOf(object))
+	return reflect.DeepEqual(object, zero.Interface())
 }
