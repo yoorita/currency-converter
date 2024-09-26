@@ -31,6 +31,10 @@ func CreateCurrencyConverterdService(deps currencyConverterServiceImplDeps) conv
 	}
 }
 
-func (impl *currencyConverterServiceImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (*converter.ConvertResponse, error) {
-	return &converter.ConvertResponse{}, nil
+func (impl *currencyConverterServiceImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (res *converter.ConvertResponse, err error) {
+	err = impl.deps.Validations.ValidateCurruncyConvertRequest(ctx, req)
+	if err != nil {
+		impl.deps.Logger.WithError(err).WithField("request", req).Error(ctx, "validation failed")
+	}
+	return impl.deps.Controller.Convert(ctx, req)
 }

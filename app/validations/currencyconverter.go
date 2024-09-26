@@ -36,9 +36,16 @@ func CreateCurrencyConverterValidations(deps currencyConverterValidationsImplDep
 
 func (impl *currencyConverterValidationsImpl) ValidateCurruncyConvertRequest(ctx context.Context, req *converter.ConvertRequest) (err error) {
 	combinedErrors := multierr.Combine(
-		validateField(req.CurrencyFrom),
-		validateField(req.CurrencyTo),
-		validateField(req.AmountFrom))
+		impl.validateField(ctx, req.GetCurrencyFrom()),
+		impl.validateField(ctx, req.GetCurrencyTo()),
+		func() error {
+			if amount:=req.GetAmountFrom(); amount < 0 {
+				impl.deps.Logger.WithField("amount", amount).Error(ctx, "negative value is not supported")
+				return status.Errorf(codes.InvalidArgument, errorMessage("amount"))
+			}
+			return nil
+		}(),
+	)
 
 	if currentError := multierr.Errors(combinedErrors); len(currentError) > 0 {
 		err = currentError[0]
@@ -46,18 +53,15 @@ func (impl *currencyConverterValidationsImpl) ValidateCurruncyConvertRequest(ctx
 	return
 }
 
-func validateField(object interface{}) (err error) {
-	if isEmpty(object) {
-		err = status.Errorf(codes.InvalidArgument, fmt.Sprintf("Input parameter %v cannot be empty", reflect.TypeOf(object).Elem().Name()))
+func (impl *currencyConverterValidationsImpl) validateField(ctx context.Context, object interface{}) (err error) {
+	objType := reflect.TypeOf(object)
+	if reflect.DeepEqual(object, reflect.Zero(objType).Interface()) {
+		impl.deps.Logger.WithField(objType.Elem().Name(), object).Error(ctx, "invalid empty value")
+		err = status.Errorf(codes.InvalidArgument, errorMessage(reflect.TypeOf(object).Elem().Name()))
 	}
 	return
 }
 
-func isEmpty(object interface{}) bool {
-	if object == nil {
-		return true
-	}
-
-	zero := reflect.Zero(reflect.TypeOf(object))
-	return reflect.DeepEqual(object, zero.Interface())
+func errorMessage(param string) string {
+	return fmt.Sprintf("fill in the correct value for the parameter %v", param)
 }

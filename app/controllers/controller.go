@@ -29,6 +29,6 @@ func CreateCurrencyConverterController(deps currencyConverterControllerImplDeps)
 	}
 }
 
-func (w *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (*converter.ConvertResponse, error) {
+func (w *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (res *converter.ConvertResponse, err error) {
 	return &converter.ConvertResponse{}, nil
 }
