@@ -35,6 +35,7 @@ func (impl *currencyConverterServiceImpl) Convert(ctx context.Context, req *conv
 	err = impl.deps.Validations.ValidateCurruncyConvertRequest(ctx, req)
 	if err != nil {
 		impl.deps.Logger.WithError(err).WithField("request", req).Error(ctx, "validation failed")
+		return nil, err
 	}
 	return impl.deps.Controller.Convert(ctx, req)
 }

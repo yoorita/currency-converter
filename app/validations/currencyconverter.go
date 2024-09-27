@@ -40,8 +40,8 @@ func (impl *currencyConverterValidationsImpl) ValidateCurruncyConvertRequest(ctx
 		impl.validateField(ctx, req.GetCurrencyTo()),
 		func() error {
 			if amount:=req.GetAmountFrom(); amount < 0 {
-				impl.deps.Logger.WithField("amount", amount).Error(ctx, "negative value is not supported")
-				return status.Errorf(codes.InvalidArgument, errorMessage("amount"))
+				impl.deps.Logger.WithField("amount_from", amount).Error(ctx, "negative value is not supported")
+				return status.Errorf(codes.InvalidArgument, errorMessage("amount_from"))
 			}
 			return nil
 		}(),
