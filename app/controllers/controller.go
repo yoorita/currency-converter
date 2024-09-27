@@ -9,19 +9,22 @@ import (
 	"go.uber.org/fx"
 )
 
-type CurrencyConverterController interface {
-	converter.CurrencyConverterServer
-}
+type (
+	CurrencyConverterController interface {
+		converter.CurrencyConverterServer
+	}
 
-type currencyConverterControllerImplDeps struct {
-	fx.In
-	Logger log.Logger
-}
+	currencyConverterControllerImplDeps struct {
+		fx.In
+		Logger log.Logger
+		Lifecycle fx.Lifecycle
+	}
 
-type currencyConverterControllerImpl struct {
-	*converter.UnimplementedCurrencyConverterServer
-	deps currencyConverterControllerImplDeps
-}
+	currencyConverterControllerImpl struct {
+		*converter.UnimplementedCurrencyConverterServer
+		deps currencyConverterControllerImplDeps
+	}
+)
 
 func CreateCurrencyConverterController(deps currencyConverterControllerImplDeps) CurrencyConverterController {
 	return &currencyConverterControllerImpl{
@@ -29,6 +32,7 @@ func CreateCurrencyConverterController(deps currencyConverterControllerImplDeps)
 	}
 }
 
-func (w *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (res *converter.ConvertResponse, err error) {
-	return &converter.ConvertResponse{}, nil
+func (impl *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (res *converter.ConvertResponse, err error) {
+	impl.deps.Logger.WithError(err).WithField("request", req).WithField("result", res).Info(ctx, "finished conversion")
+	return
 }
