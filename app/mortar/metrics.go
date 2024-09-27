@@ -7,6 +7,8 @@ import (
 	"github.com/go-masonry/mortar/interfaces/monitor"
 	"github.com/go-masonry/mortar/providers"
 	"go.uber.org/fx"
+
+	"strings"
 )
 
 // PrometheusFxOption registers prometheus
@@ -21,6 +23,6 @@ func PrometheusFxOption() fx.Option {
 
 // PrometheusBuilder returns a monitor.Builder that is implemented by Prometheus
 func PrometheusBuilder(cfg cfg.Config) monitor.Builder {
-	name := cfg.Get(confkeys.ApplicationName).String()
+	name := strings.ReplaceAll(cfg.Get(confkeys.ApplicationName).String(), "-", "_")
 	return bprometheus.Builder().SetNamespace(name)
 }
