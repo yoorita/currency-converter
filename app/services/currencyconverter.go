@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/yoorita/currency-converter/app/controllers"
-	"github.com/go-masonry/mortar/interfaces/monitor"
 	converter "github.com/yoorita/currency-converter/api"
 	"github.com/yoorita/currency-converter/app/validations"
 
@@ -17,7 +16,6 @@ type currencyConverterServiceImplDeps struct {
 	Logger log.Logger
 	Validations validations.CurrencyConverterValidations
 	Controller  controllers.CurrencyConverterController
-	Metrics     monitor.Metrics `optional:"true"`
 }
 
 type currencyConverterServiceImpl struct {
