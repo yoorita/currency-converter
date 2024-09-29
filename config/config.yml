@@ -101,3 +101,8 @@ mortar:
 server:
   logger:
     console: true
+
+exchange:
+  sqlite:
+    db: "exhangecodes.db"
+    codes: "currency_codes.json"

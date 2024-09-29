@@ -3,7 +3,6 @@ package clients
 import (
 	"context"
 
-	"github.com/go-masonry/mortar/interfaces/cfg"
 	"github.com/go-masonry/mortar/interfaces/log"
 	"github.com/vtopc/go-monobank"
 	"go.uber.org/fx"
@@ -11,15 +10,13 @@ import (
 
 type (
 	MonobankClient interface {
-		GetCurrencyRates(context.Context) error
+		GetCurrencyRates(context.Context) (monobank.Currencies, error)
 	}
 
 	monobankClientImplDeps struct {
 		fx.In
 
 		Logger log.Logger
-		Config cfg.Config
-		Lifecycle fx.Lifecycle
 	}
 
 	monobankClientImpl struct {
@@ -35,9 +32,9 @@ func CreateMonobankClient(deps monobankClientImplDeps) MonobankClient {
 	}
 }
 
-func (impl *monobankClientImpl) GetCurrencyRates(ctx context.Context) (err error) {
-	currency, err := impl.client.Currency(ctx)
-	impl.deps.Logger.WithError(err).WithField("result", currency).Info(ctx, "finished")
+func (impl *monobankClientImpl) GetCurrencyRates(ctx context.Context) (curr monobank.Currencies, err error) {
+	curr, err = impl.client.Currency(ctx)
+	impl.deps.Logger.WithError(err).Info(ctx, "got currencies")
 	return
 }
 

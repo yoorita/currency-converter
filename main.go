@@ -40,6 +40,7 @@ func createApplication(configFilePath string, additionalFiles []string) *fx.App 
 		mortar.ServiceAPIsAndOtherDependenciesFxOption(), // register tutorial APIs
 		// Other dependencies
 		mortar.MonoFxOptions(),
+		mortar.SQLiteFxOptions(),
 		// This one invokes all the above
 		providers.BuildMortarWebServiceFxOption(), // http server invoker
 	)

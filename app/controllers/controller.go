@@ -4,6 +4,7 @@ import (
 	"context"
 
 	converter "github.com/yoorita/currency-converter/api"
+	"github.com/yoorita/currency-converter/app/clients"
 
 	"github.com/go-masonry/mortar/interfaces/log"
 	"go.uber.org/fx"
@@ -17,7 +18,8 @@ type (
 	currencyConverterControllerImplDeps struct {
 		fx.In
 		Logger log.Logger
-		Lifecycle fx.Lifecycle
+		Monobank clients.MonobankClient
+		Sqlite *clients.LazySQLCLient
 	}
 
 	currencyConverterControllerImpl struct {
@@ -33,6 +35,8 @@ func CreateCurrencyConverterController(deps currencyConverterControllerImplDeps)
 }
 
 func (impl *currencyConverterControllerImpl) Convert(ctx context.Context, req *converter.ConvertRequest) (res *converter.ConvertResponse, err error) {
-	impl.deps.Logger.WithError(err).WithField("request", req).WithField("result", res).Info(ctx, "finished conversion")
+	// impl.deps.Monobank.GetCurrencyRates(ctx)
+	fromCode, err := impl.deps.Sqlite.Client.GetCurrencyCode(ctx, req.GetCurrencyFrom())
+	impl.deps.Logger.WithError(err).WithField("from", fromCode).Info(ctx, "finished conversion")
 	return
 }
