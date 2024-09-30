@@ -3,12 +3,13 @@ package mortar
 import (
 	"context"
 
-	converter "github.com/yoorita/currency-converter/api"
-	"github.com/yoorita/currency-converter/app/controllers"
-	"github.com/yoorita/currency-converter/app/services"
-	"github.com/yoorita/currency-converter/app/validations"
 	serverInt "github.com/go-masonry/mortar/interfaces/http/server"
 	"github.com/go-masonry/mortar/providers/groups"
+	converter "github.com/yoorita/currency-converter/api"
+	"github.com/yoorita/currency-converter/app/controllers"
+	"github.com/yoorita/currency-converter/app/data"
+	"github.com/yoorita/currency-converter/app/services"
+	"github.com/yoorita/currency-converter/app/validations"
 	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -66,5 +67,6 @@ func serviceDependencies() fx.Option {
 		services.CreateCurrencyConverterdService,
 		controllers.CreateCurrencyConverterController,
 		validations.CreateCurrencyConverterValidations,
+		data.CreateCurrencyConverterDao,
 	)
 }

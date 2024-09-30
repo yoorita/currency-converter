@@ -117,10 +117,10 @@ func (impl *sqliteClientImpl) GetCurrencyCode(ctx context.Context, alphabeticcod
 	err = row.Scan(&result)
 
 	if err != nil {
-		impl.deps.Logger.WithError(err).Error(ctx, "couldn't fetch numeric code by alphabetic code")
+		impl.deps.Logger.WithError(err).Error(ctx, "couldn't match alphabetic code to numeric code")
 		return
 	}
 
-	impl.deps.Logger.WithField("from code", result).Info(ctx, "got code")
+	impl.deps.Logger.WithField("code", result).Info(ctx, "got numeric code")
 	return
 }
