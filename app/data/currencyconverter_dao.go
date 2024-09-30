@@ -25,7 +25,6 @@ type(
 
 	currencyConverterDaoImpl struct {
 		deps currencyConverterDaoImplDeps
-		currencies *monobank.Currencies
 	}
 )
 
